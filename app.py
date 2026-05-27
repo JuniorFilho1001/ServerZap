@@ -2,6 +2,7 @@ import sqlite3
 from flask import Flask, request
 from flask_socketio import SocketIO, emit
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -101,4 +102,7 @@ def handle_enviar_mensagem(data):
     emit('receber_mensagem', pacote_para_envio, broadcast=True)
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    # O Render fornece a porta via variável de ambiente
+    port = int(os.environ.get("PORT", 10000))
+    # Rodamos o socketio diretamente
+    socketio.run(app, host='0.0.0.0', port=port)
